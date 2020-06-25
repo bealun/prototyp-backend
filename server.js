@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
   res.send('This is a code test for Prototyp.')
 })
 
-app.post('/upload', async (req, res) => {
+app.post('/uploads', async (req, res) => {
   try {
     const { username, description } = req.body
     const postedFileinput = await new FileInput({
@@ -58,16 +58,28 @@ app.post('/upload', async (req, res) => {
   }
 })
 
-app.get('/upload', async (req, res) => {
+app.get('/uploads', async (req, res) => {
   try {
     const filesViaInput = await FileInput.find().sort({ createdAt: 'desc' }).exec()
-    res.json(filesViaInput)
+    res.status(201).json(filesViaInput)
   } catch (err) {
-    res.status(400).json({ message: 'Failed'})
+    res.status(400).json({ message: 'Cannot get uploads'})
   }
 })
 
-app.post('/upload/:id/files', parser.single('file'), async (req, res) => {
+app.delete('/uploads/:id', async (req, res) => {
+  try {
+    await FileInput.findOneAndDelete({ _id: req.params.id })
+    res.status(204).json({ message: 'Successful removal' })
+  } catch (err) {
+    res.status(404).json({
+      message: 'Could not delete',
+      error: err.errors
+    })
+  }
+})
+
+app.post('/uploads/:id/files', parser.single('file'), async (req, res) => {
   const { id } = req.params
   try {
     const updatedFileinput = await FileInput.findOneAndUpdate(
