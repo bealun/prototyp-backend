@@ -2,13 +2,16 @@ import mongoose from 'mongoose'
 
 export const FileInput = mongoose.model('FileInput', {
   username: {
-    type: String
+    type: String,
+    required: true
   },
   description: {
-    type: String
+    type: String,
+    maxlength: 60
   },
   files: {
-    type: String
+    type: String,
+    required: true
   },
   filename: {
     type: String
