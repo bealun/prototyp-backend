@@ -1,11 +1,38 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import mongoose from 'mongoose'
+import cloudinaryFramework from 'cloudinary'
+import multer from 'multer'
+import cloudinaryStorage from 'multer-storage-cloudinary'
+import dotenv from 'dotenv'
+import { FileInput } from './models/fileinput'
 
-// Defines the port the app will run on. Defaults to 8080, but can be 
-// overridden when starting the server. For example:
-//
-//   PORT=9000 npm start
+dotenv.config()
+
+const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/code-test"
+mongoose.connect(mongoUrl, 
+  { useNewUrlParser: true, 
+    useUnifiedTopology: true })
+mongoose.Promise = Promise
+
+const cloudinary = cloudinaryFramework.v2; 
+cloudinary.config({
+  cloud_name: 'dpofhliiy',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
+const storage = cloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'files',
+    allowedFormats: ['jpg', 'png', 'pdf'],
+    transformation: [{ width: 500, height: 500, crop: 'limit' }],
+  },
+})
+const parser = multer({ storage })
+
 const port = process.env.PORT || 8080
 const app = express()
 
@@ -15,7 +42,42 @@ app.use(bodyParser.json())
 
 // Start defining your routes here
 app.get('/', (req, res) => {
-  res.send('Hello world')
+  res.send('This is a code test for Prototyp.')
+})
+
+app.post('/upload', async (req, res) => {
+  try {
+    const { username, description } = req.body
+    const postedFileinput = await new FileInput({
+      username,
+      description
+    }).save()
+    res.status(201).json(postedFileinput)
+  } catch (err) {
+    res.status(400).json({ message: 'Could not post input', error: err.errors })
+  }
+})
+
+app.get('/upload', async (req, res) => {
+  try {
+    const filesViaInput = await FileInput.find().sort({ createdAt: 'desc' }).exec()
+    res.json(filesViaInput)
+  } catch (err) {
+    res.status(400).json({ message: 'Failed'})
+  }
+})
+
+app.post('/upload/:id/files', parser.single('file'), async (req, res) => {
+  const { id } = req.params
+  try {
+    const updatedFileinput = await FileInput.findOneAndUpdate(
+      { _id: id },
+      { files: req.file.path, filename: req.file.filename },
+      { new: true })
+    res.json(updatedFileinput)
+  } catch (err) {
+    res.status(400).json({ message: 'Could not post file', error: err.errors })
+  }
 })
 
 // Start the server
