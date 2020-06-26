@@ -27,8 +27,8 @@ const storage = cloudinaryStorage({
   cloudinary,
   params: {
     folder: 'files',
-    allowedFormats: ['jpg', 'pdf'],
-    transformation: [{ width: 800, height: 800, crop: 'limit' }],
+    allowedFormats: ['jpg', 'png', 'pdf'],
+    transformation: [{ width: 500, height: 500, crop: 'limit' }],
   },
 })
 const parser = multer({ storage })
@@ -45,6 +45,7 @@ app.get('/', (req, res) => {
   res.send('This is a code test for Prototyp.')
 })
 
+// POST req with only text
 app.post('/uploads', async (req, res) => {
   try {
     const { username, description } = req.body
@@ -58,6 +59,7 @@ app.post('/uploads', async (req, res) => {
   }
 })
 
+// GET to list every upload
 app.get('/uploads', async (req, res) => {
   try {
     const filesViaInput = await FileInput.find().sort({ createdAt: 'desc' }).exec()
@@ -67,6 +69,7 @@ app.get('/uploads', async (req, res) => {
   }
 })
 
+// DELETES single item
 app.delete('/uploads/:id', async (req, res) => {
   try {
     await FileInput.findOneAndDelete({ _id: req.params.id })
@@ -79,6 +82,7 @@ app.delete('/uploads/:id', async (req, res) => {
   }
 })
 
+// POST req for file to connect w text inputs
 app.post('/uploads/:id/files', parser.single('file'), async (req, res) => {
   const { id } = req.params
   try {

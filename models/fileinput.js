@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 
+// Model for uploads
 export const FileInput = mongoose.model('FileInput', {
   username: {
     type: String,
@@ -10,8 +11,7 @@ export const FileInput = mongoose.model('FileInput', {
     maxlength: 60
   },
   files: {
-    type: String,
-    required: true
+    type: String
   },
   filename: {
     type: String
