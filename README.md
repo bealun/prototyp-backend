@@ -15,19 +15,19 @@ For backend I've used:
 ## Endpoints
 
 GET: 
- * /uploads
- *lists all uploads
+/uploads
+ * lists all uploads
 
 POST: 
- * /uploads
- *sends metadata with only text
+/uploads
+ * sends metadata with only text
  
- * /uploads/:id/files
- *file uploads, connects with metadata and updates with file
+/uploads/:id/files
+ * file uploads, connects with metadata and updates with file
  
 DELETE:
- * /uploads/:id
- *find uploads via id and deletes item
+/uploads/:id
+ * find uploads via id and deletes item
 
 ## Reflection
 
