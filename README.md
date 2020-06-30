@@ -16,18 +16,18 @@ For backend I've used:
 
 GET: 
  * /uploads
- lists all uploads
+ *lists all uploads
 
 POST: 
  * /uploads
- sends metadata with only text
+ *sends metadata with only text
  
  * /uploads/:id/files
- file uploads, connects with metadata and updates with file
+ *file uploads, connects with metadata and updates with file
  
 DELETE:
  * /uploads/:id
- find uploads via id and deletes item
+ *find uploads via id and deletes item
 
 ## Reflection
 
