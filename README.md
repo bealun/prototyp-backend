@@ -1,7 +1,12 @@
-# Express Starter Project
+# Tech Test
 
-This project includes the packages and babel setup for an express server, and is just meant to make things a little simpler to get up and running with.
+The challenge is to create a file archive with both frontend and backend in preferred tech stack. 
 
-## Getting started
+## Code
 
-Install dependencies with `npm install`, then start the server by running `npm run dev`
+For backend I've used:
+  * **Node.js**
+  * **Express.js**
+  * **Mongoose**
+  * **MongoDB**
+  * **Restful API**
