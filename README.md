@@ -15,10 +15,12 @@ For backend I've used:
 ## Endpoints
 
 GET: 
+
 /uploads
  * lists all uploads
 
-POST: 
+POST:
+
 /uploads
  * sends metadata with only text
  
@@ -26,6 +28,7 @@ POST:
  * file uploads, connects with metadata and updates with file
  
 DELETE:
+
 /uploads/:id
  * find uploads via id and deletes item
 
